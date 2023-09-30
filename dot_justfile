@@ -1,5 +1,4 @@
 !include /usr/share/ublue-os/justfile
-!include /usr/share/ublue-os/just/100-bling.just
 
 # Compiles all GSettings XML schema files to gschemas.compiled
 compile-gsettings-schemas:
