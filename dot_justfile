@@ -1,4 +1,5 @@
 !include /usr/share/ublue-os/justfile
+!include .just/starship.just
 
 # Compiles all GSettings XML schema files to gschemas.compiled
 compile-gsettings-schemas:
@@ -154,7 +155,7 @@ install-gnome-extensions:
   just install-gnome-extension appindicatorsupport@rgcjonas.gmail.com
   just install-gnome-extension blur-my-shell@aunetx
   just install-gnome-extension dash-to-dock@micxgx.gmail.com
-  just install-gnome-extension dynamic-panel-transparency@rockon999.github.io
+  #just install-gnome-extension dynamic-panel-transparency@rockon999.github.io
   just install-gnome-extension gsconnect@andyholmes.github.io
   just install-gnome-extension logomenu@aryan_k
   just install-gnome-extension Move_Clock@rmy.pobox.com
@@ -165,11 +166,25 @@ install-gnome-extensions:
   just compile-gsettings-schemas
   just configure-gnome-extensions
 
-# Install Starship shell prompt
-install-starship:
-  curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir $HOME/.local/bin
+# Install additional Windows software
+[windows]
+install-winget-pkgs:
+  just install-winget-package '7zip.7zip'
+  just install-winget-package 'Brave.Brave'
+  just install-winget-package 'Citrix.Workspace.LTSR'
+  just install-winget-package 'JohnMacFarlane.Pandoc'
+  just install-winget-package 'Mattermost.MattermostDesktop'
+  just install-winget-package 'Microsoft.Office'
+  just install-winget-package 'Microsoft.VisualStudioCode'
+  just install-winget-package 'MHNexus.HxD'
+  just install-winget-package 'Mozilla.Firefox'
+  just install-winget-package 'NoMoreFood.PuTTY-CAC'
+  just install-winget-package 'Spotify.Spotify'
+  just install-winget-package 'TheDocumentFoundation.LibreOffice'
+  just install-winget-package 'VideoLAN.VLC'
 
 # Sets up PC with desired settings
+[linux]
 setup:
   just configure-desktop-background
   just configure-desktop-interface
