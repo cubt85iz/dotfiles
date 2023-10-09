@@ -114,8 +114,8 @@ install-gnome-extension uuid:
   set -euxo pipefail
 
   EXTENSION_DIR="$HOME/.local/share/gnome-shell/extensions"
-  GNOME_SHELL_VERSION=$(gnome-shell --version | cut --delimeter=' ' --fields=3 | \
-    cut --delimeter='.' --fields=1)
+  GNOME_SHELL_VERSION=$(gnome-shell --version | cut --delimiter=' ' --fields=3 | \
+    cut --delimiter='.' --fields=1)
 
   # Install extension
   extension_version=$(curl -Lfs "https://extensions.gnome.org/extension-query/?search={{ uuid }}" | \
