@@ -148,6 +148,9 @@ install-gnome-extension uuid:
 # Installs all GNOME extensions
 install-gnome-extensions:
   #!/usr/bin/env bash
+
+  set -euxo pipefail
+
   just install-gnome-extension add-username-toppanel@brendaw.com
   just install-gnome-extension AlphabeticalAppGrid@stuarthayhurst
   just install-gnome-extension appindicatorsupport@rgcjonas.gmail.com
@@ -183,6 +186,9 @@ install-winget-pkgs:
 [linux]
 setup:
   #!/usr/bin/env bash
+
+  set -euxo pipefail
+
   just install-appimages
   just install-gnome-extensions
   just configure-desktop-background
