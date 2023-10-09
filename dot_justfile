@@ -147,12 +147,12 @@ install-gnome-extension uuid:
 
 # Installs all GNOME extensions
 install-gnome-extensions:
+  #!/usr/bin/env bash
   just install-gnome-extension add-username-toppanel@brendaw.com
   just install-gnome-extension AlphabeticalAppGrid@stuarthayhurst
   just install-gnome-extension appindicatorsupport@rgcjonas.gmail.com
   just install-gnome-extension blur-my-shell@aunetx
   just install-gnome-extension dash-to-dock@micxgx.gmail.com
-  just install-gnome-extension gsconnect@andyholmes.github.io
   just install-gnome-extension logomenu@aryan_k
   just install-gnome-extension Move_Clock@rmy.pobox.com
   just install-gnome-extension no-overview@fthx
@@ -182,14 +182,15 @@ install-winget-pkgs:
 # Sets up PC with desired settings
 [linux]
 setup:
+  #!/usr/bin/env bash
+  just install-appimages
+  just install-gnome-extensions
   just configure-desktop-background
   just configure-desktop-interface
   just configure-desktop-notifications
-  just configure-keybindings
+  # just configure-keybindings
   just configure-nautilus
   just configure-power-settings
   just configure-privacy-settings
   just configure-touchpad
   just configure-windowmanager
-  just install-appimages
-  just install-gnome-extensions
