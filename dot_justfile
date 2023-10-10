@@ -151,6 +151,11 @@ install-gnome-extensions:
 
   set -euxo pipefail
 
+  shopt -s expand_aliases
+  if [ -f "$HOME/.bash_aliases" ]; then
+    . $HOME/.bash_aliases
+  fi
+
   just install-gnome-extension add-username-toppanel@brendaw.com
   just install-gnome-extension AlphabeticalAppGrid@stuarthayhurst
   just install-gnome-extension appindicatorsupport@rgcjonas.gmail.com
