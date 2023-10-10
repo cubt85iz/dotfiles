@@ -194,6 +194,11 @@ setup:
 
   set -euxo pipefail
 
+  shopt -s expand_aliases
+  if [ -f "$HOME/.bash_aliases" ]; then
+    . $HOME/.bash_aliases
+  fi
+
   just install-appimages
   just install-gnome-extensions
   just configure-desktop-background
