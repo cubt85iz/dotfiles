@@ -210,3 +210,5 @@ setup:
   just configure-privacy-settings
   just configure-touchpad
   just configure-windowmanager
+  just configure-gnome-shell
+
