@@ -162,6 +162,7 @@ install-gnome-extensions:
   just install-gnome-extension appindicatorsupport@rgcjonas.gmail.com
   just install-gnome-extension blur-my-shell@aunetx
   just install-gnome-extension dash-to-dock@micxgx.gmail.com
+  just install-gnome-extension horizontal-workspace-indicator@tty2.io
   just install-gnome-extension logomenu@aryan_k
   just install-gnome-extension Move_Clock@rmy.pobox.com
   just install-gnome-extension no-overview@fthx
