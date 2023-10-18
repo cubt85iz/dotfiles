@@ -102,11 +102,42 @@ configure-touchpad:
 configure-windowmanager:
   gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 
+download-appimage-github $org $repo $destination:
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  RELEASE_URL=https://api.github.com/repos/$org/$repo/releases/latest
+  APPIMAGE_URL=$(curl -sL $RELEASE_URL | jq -r '.assets[] | select(.name|test("AppImage$")).browser_download_url')
+  curl -sL $APPIMAGE_URL -o $destination 
+
 # Downloads and installs AppImages
 install-appimages:
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  # Source aliases from ~/.bash_aliases
+  shopt -s expand_aliases
+  if [ -f "$HOME/.bash_aliases" ]; then
+    . $HOME/.bash_aliases
+  fi
+
   mkdir -p ~/Apps
-  curl https://mail.tutanota.com/desktop/tutanota-desktop-linux.AppImage -o ~/Apps/tutanota-desktop-linux.AppImage
-  chmod u+x ~/Apps/tutanota-desktop-linux.AppImage
+  echo "Downloading AppImage for Tutanota to ~/Apps..."
+  curl -s https://mail.tutanota.com/desktop/tutanota-desktop-linux.AppImage -o ~/Apps/tutanota-desktop-linux.AppImage
+  
+  # Download Bitwarden Desktop Client
+  BITWARDEN_URL=$(curl -sL https://api.github.com/repos/bitwarden/clients/releases | jq -r 'first(.[] | select (.tag_name|test("^desktop-"))).assets[] | select(.browser_download_url | test("AppImage")).browser_download_url')
+  echo "Downloading AppImage for Bitwarden to ~/Apps..."
+  curl -sL $BITWARDEN_URL -o ~/Apps/Bitwarden.AppImage
+
+  # Download MediaElch
+  echo "Downloading AppImage for MediaElch to ~/Apps..."
+  just download-appimage-github Komet MediaElch ~/Apps/MediaElch.AppImage
+
+  # Ensure AppImages are executable.
+  chmod u+x ~/Apps/*.AppImage
 
 # Installs a specified GNOME extension
 install-gnome-extension uuid:
