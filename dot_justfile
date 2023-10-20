@@ -54,7 +54,7 @@ configure-gnome-extensions:
 
 # Configure settings for GNOME shell
 configure-gnome-shell:
-  gsettings set org.gnome.shell favorite-apps "['com.brave.Browser.desktop', 'org.mozilla.firefox.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'code.desktop', 'com.spotify.Client.desktop', 'com.valvesoftware.Steam.desktop', 'com.discordapp.Discord.desktop']"
+  gsettings set org.gnome.shell favorite-apps "['com.brave.Browser.desktop', 'org.mozilla.firefox.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'code.desktop', 'com.spotify.Client.desktop', 'com.valvesoftware.Steam.desktop', 'com.discordapp.Discord.desktop', 'tutanota-desktop.desktop', 'bitwarden.desktop']"
   gsettings set org.gnome.shell.app-switcher current-workspace-only 'true'
   gsettings set org.gnome.shell.weather automatic-location 'false'
 
@@ -111,6 +111,31 @@ download-appimage-github $org $repo $destination:
   APPIMAGE_URL=$(curl -sL $RELEASE_URL | jq -r '.assets[] | select(.name|test("AppImage$")).browser_download_url')
   curl -sL $APPIMAGE_URL -o $destination 
 
+install-appimage-desktop $appimage:
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  # Extract AppImage to local directory
+  pushd ~/.local/bin &> /dev/null
+  $appimage --appimage-extract
+
+  # Install desktop entry
+  cp squashfs-root/*.desktop ~/.local/share/applications/
+
+  # Install icons
+  rsync -a squashfs-root/usr/share/icons/ ~/.local/share/icons/
+  if [ "$appimage" == "MediaElch.AppImage" ]; then
+    cp squashfs-root/MediaElch.png $HOME/.local/share/icons/
+  fi
+
+  # Remove squashfs-root directory
+  rm -rf squashfs-root
+
+  # Return to original directory
+  popd &> /dev/null
+   
+
 # Downloads and installs AppImages
 install-appimages:
   #!/usr/bin/env bash
@@ -123,21 +148,29 @@ install-appimages:
     . $HOME/.bash_aliases
   fi
 
-  mkdir -p ~/Apps
-  echo "Downloading AppImage for Tutanota to ~/Apps..."
-  curl -s https://mail.tutanota.com/desktop/tutanota-desktop-linux.AppImage -o ~/Apps/tutanota-desktop-linux.AppImage
+  echo "Downloading AppImage for Tutanota to $HOME/.local/bin..."
+  curl -s https://mail.tutanota.com/desktop/tutanota-desktop-linux.AppImage -o $HOME/.local/bin/Tutanota.AppImage
   
   # Download Bitwarden Desktop Client
   BITWARDEN_URL=$(curl -sL https://api.github.com/repos/bitwarden/clients/releases | jq -r 'first(.[] | select (.tag_name|test("^desktop-"))).assets[] | select(.browser_download_url | test("AppImage")).browser_download_url')
-  echo "Downloading AppImage for Bitwarden to ~/Apps..."
-  curl -sL $BITWARDEN_URL -o ~/Apps/Bitwarden.AppImage
+  echo "Downloading AppImage for Bitwarden to $HOME/.local/bin..."
+  curl -sL $BITWARDEN_URL -o $HOME/.local/bin/bitwarden.AppImage
 
   # Download MediaElch
-  echo "Downloading AppImage for MediaElch to ~/Apps..."
-  just download-appimage-github Komet MediaElch ~/Apps/MediaElch.AppImage
+  echo "Downloading AppImage for MediaElch to $HOME/.local/bin..."
+  just download-appimage-github Komet MediaElch $HOME/.local/bin/MediaElch.AppImage
 
   # Ensure AppImages are executable.
-  chmod u+x ~/Apps/*.AppImage
+  chmod u+x $HOME/.local/bin/*.AppImage
+
+  # Install Desktop Entries
+  just install-appimage-desktop bitwarden.AppImage
+  just install-appimage-desktop MediaElch.AppImage
+
+  # Tweak Desktop Entry Paths
+  sed -i "s|AppRun --no-sandbox|$HOME/.local/bin/bitwarden.AppImage|" $HOME/.local/share/applications/bitwarden.desktop
+  sed -i "s|Exec=MediaElch|Exec=$HOME/.local/bin/MediaElch.AppImage|" $HOME/.local/share/applications/MediaElch.desktop
+  sed -i "s|Icon=MediaElch|Icon=$HOME/.local/share/icons/MediaElch.png|" $HOME/.local/share/applications/MediaElch.desktop
 
 # Installs a specified GNOME extension
 install-gnome-extension uuid:
