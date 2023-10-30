@@ -172,32 +172,6 @@ install-appimages:
   sed -i "s|Exec=MediaElch|Exec=$HOME/.local/bin/MediaElch.AppImage|" $HOME/.local/share/applications/MediaElch.desktop
   sed -i "s|Icon=MediaElch|Icon=$HOME/.local/share/icons/MediaElch.png|" $HOME/.local/share/applications/MediaElch.desktop
 
-install-syncthing:
-  #!/usr/bin/env bash
-
-  set -eou pipefail
-
-  cat <<EOF > $HOME/.config/containers/systemd/syncthing.container
-  [Unit]
-  Description=Container service for Syncthing
-
-  [Container]
-  ContainerName=syncthing
-  Image=docker.io/syncthing/syncthing:latest
-  PublishPort=8384:8384/tcp
-  PublishPort=22000:22000/tcp
-  PublishPort=22000:22000/udp
-  PublishPort=21027:21027/udp
-  Pull=always
-  Volume=syncthing-data:/var/syncthing
-
-  [Service]
-  Restart=on-failure
-
-  [Install]
-  WantedBy=default.target
-  EOF
-
 # Installs a specified GNOME extension
 install-gnome-extension uuid:
   #!/usr/bin/env bash
@@ -261,6 +235,39 @@ install-gnome-extensions:
   just install-gnome-extension transparent-top-bar@ftpix.com
   just compile-gsettings-schemas
   just configure-gnome-extensions
+
+# Installs container for Syncthing
+[linux]
+install-syncthing:
+  #!/usr/bin/env bash
+
+  set -eou pipefail
+
+  cat <<EOF > $HOME/.config/containers/systemd/syncthing.container
+  [Unit]
+  Description=Container service for Syncthing
+  After=network-online.target
+
+  [Container]
+  ContainerName=syncthing
+  Image=docker.io/syncthing/syncthing:latest
+  PublishPort=8384:8384
+  PublishPort=22000:22000/tcp
+  PublishPort=22000:22000/udp
+  PublishPort=21027:21027/udp
+  Pull=always
+  Volume=syncthing-data:/var/syncthing
+
+  [Service]
+  Restart=on-failure
+
+  [Install]
+  WantedBy=default.target
+  EOF
+
+  systemctl --user daemon-reload
+  systemctl --user enable syncthing.service
+  systemctl --user start syncthing.service
 
 # Install additional Windows software
 [windows]
