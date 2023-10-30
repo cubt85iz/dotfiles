@@ -243,6 +243,10 @@ install-syncthing:
 
   set -eou pipefail
 
+  if [ ! -d $HOME/.config/containers/systemd ]; then
+    mkdir -p $HOME/.config/containers/systemd
+  fi
+
   cat <<EOF > $HOME/.config/containers/systemd/syncthing.container
   [Unit]
   Description=Container service for Syncthing
@@ -255,8 +259,10 @@ install-syncthing:
   PublishPort=22000:22000/tcp
   PublishPort=22000:22000/udp
   PublishPort=21027:21027/udp
-  Pull=always
   Volume=syncthing-data:/var/syncthing
+  Volume=$HOME/.kdbx:/var/syncthing/kdbx
+  AutoUpdate=registry
+  Pull=always
 
   [Service]
   Restart=on-failure
@@ -266,8 +272,7 @@ install-syncthing:
   EOF
 
   systemctl --user daemon-reload
-  systemctl --user enable syncthing.service
-  systemctl --user start syncthing.service
+  systemctl --user start syncthing
 
 # Install additional Windows software
 [windows]
