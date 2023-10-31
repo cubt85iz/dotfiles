@@ -236,9 +236,9 @@ install-gnome-extensions:
   just compile-gsettings-schemas
   just configure-gnome-extensions
 
-# Installs container for Syncthing
+# Installs podman container using quadlet
 [linux]
-install-syncthing:
+install-container $name:
   #!/usr/bin/env bash
 
   set -eou pipefail
@@ -247,10 +247,31 @@ install-syncthing:
     mkdir -p $HOME/.config/containers/systemd
   fi
 
-  .just/scripts/render_quadlet_container_template.py .just/syncthing/syncthing.container.j2 .just/secrets.yml
+  if [ -f .just/$name/$name.container ]; then
+    cp .just/$name/$name.container $HOME/.config/containers/systemd/
+  elif [ -f .just/$name/$name.container.j2 ]; then
+    .just/scripts/render_quadlet_container_template.py .just/$name/$name.container.j2 .just/secrets.yml
+  else
+    echo "ERROR: Unable to find quadlet for specified container ($name)."
+    exit 1
+  fi
 
   systemctl --user daemon-reload
-  systemctl --user start syncthing
+  systemctl --user start $name
+
+# Installs container for Syncthing
+[linux]
+install-containers:
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  shopt -s expand_aliases
+  if [ -f "$HOME/.bash_aliases" ]; then
+    . $HOME/.bash_aliases
+  fi
+
+  just install-container syncthing
 
 # Install additional Windows software
 [windows]
