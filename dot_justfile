@@ -1,5 +1,4 @@
-!include /usr/share/ublue-os/justfile
-!include .just/starship.just
+import ".just/starship.just"
 
 # Compiles all GSettings XML schema files to gschemas.compiled
 compile-gsettings-schemas:
@@ -45,11 +44,11 @@ configure-gnome-extensions:
   gsettings set org.gnome.shell.extensions.dash-to-dock apply-custom-theme 'true'
   gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'previews'
   gsettings set org.gnome.shell.extensions.dash-to-dock show-apps-at-top 'true'
-  gsettings set org.gnome.shell.extensions.logo-menu menu-button-icon-image '1'
-  gsettings set org.gnome.shell.extensions.openweather position-in-panel 'right'
-  gsettings set org.gnome.shell.extensions.openweather pressure-unit 'bar'
-  gsettings set org.gnome.shell.extensions.openweather unit 'fahrenheit'
-  gsettings set org.gnome.shell.extensions.openweather wind-speed-unit 'mph'
+  # gsettings set org.gnome.shell.extensions.logo-menu menu-button-icon-image '1'
+  # gsettings set org.gnome.shell.extensions.openweather position-in-panel 'right'
+  # gsettings set org.gnome.shell.extensions.openweather pressure-unit 'bar'
+  # gsettings set org.gnome.shell.extensions.openweather unit 'fahrenheit'
+  # gsettings set org.gnome.shell.extensions.openweather wind-speed-unit 'mph'
   gsettings set org.gnome.shell.extensions.quick-settings-tweaks output-show-selected 'true'
 
 # Configure settings for GNOME shell
@@ -185,11 +184,15 @@ install-gnome-extension uuid:
   extension_version=$(curl -Lfs "https://extensions.gnome.org/extension-query/?search={{ uuid }}" | \
     jq --arg jq_build "{{ uuid }}" '.extensions[] | select(.uuid == $jq_build) | .shell_version_map."'"$GNOME_SHELL_VERSION"'".pk')
   if [ -n "$extension_version" ]; then
-    curl -L "https://extensions.gnome.org/download-extension/{{ uuid }}.shell-extension.zip?version_tag=$extension_version" -o "{{ uuid }}.zip"
+    if [ ! -d ".gnome-extensions" ]; then
+      mkdir .gnome-extensions
+    fi
+
+    curl -SsL "https://extensions.gnome.org/download-extension/{{ uuid }}.shell-extension.zip?version_tag=$extension_version" -o ".gnome-extensions/{{ uuid }}.zip"
     if [ ! -d "$EXTENSION_DIR" ]; then
       mkdir -p "$EXTENSION_DIR/{{ uuid }}"
     fi
-    unzip -o "{{ uuid }}.zip" -d "$EXTENSION_DIR/{{ uuid }}"
+    unzip -o ".gnome-extensions/{{ uuid }}.zip" -d "$EXTENSION_DIR/{{ uuid }}"
 
     # Compile GSettings schemas 
     if [ -f $EXTENSION_DIR/{{ uuid }}/schemas/*.xml ]; then
@@ -226,11 +229,11 @@ install-gnome-extensions:
   just install-gnome-extension appindicatorsupport@rgcjonas.gmail.com
   just install-gnome-extension blur-my-shell@aunetx
   just install-gnome-extension dash-to-dock@micxgx.gmail.com
-  just install-gnome-extension horizontal-workspace-indicator@tty2.io
-  just install-gnome-extension logomenu@aryan_k
+  # just install-gnome-extension horizontal-workspace-indicator@tty2.io
+  # just install-gnome-extension logomenu@aryan_k
   just install-gnome-extension Move_Clock@rmy.pobox.com
   just install-gnome-extension no-overview@fthx
-  just install-gnome-extension openweather-extension@jenslody.de
+  # just install-gnome-extension openweather-extension@jenslody.de
   just install-gnome-extension quick-settings-tweaks@qwreey
   just install-gnome-extension transparent-top-bar@ftpix.com
   just compile-gsettings-schemas
@@ -302,7 +305,7 @@ setup:
     . $HOME/.bash_aliases
   fi
 
-  just install-appimages
+  # just install-appimages
   just install-gnome-extensions
   just configure-desktop-background
   just configure-desktop-interface
@@ -315,3 +318,5 @@ setup:
   just configure-windowmanager
   just configure-gnome-shell
 
+# You can add your own commands here! For documentation, see: https://ublue.it/guide/just/
+import "/usr/share/ublue-os/justfile"
