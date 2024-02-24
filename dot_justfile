@@ -18,8 +18,6 @@ compile-gsettings-schemas:
 configure-desktop-background:
   gsettings set org.gnome.desktop.background color-shading-type 'solid'
   gsettings set org.gnome.desktop.background picture-options 'zoom'
-  gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/gnome/adwaita-l.webp'
-  gsettings set org.gnome.desktop.background picture-uri-dark 'file:///usr/share/backgrounds/gnome/adwaita-d.webp'
   gsettings set org.gnome.desktop.background primary-color '#3071AE'
   gsettings set org.gnome.desktop.background secondary-color '#000000'
 
@@ -57,18 +55,18 @@ configure-gnome-shell:
   gsettings set org.gnome.shell.weather automatic-location 'false'
 
 # Configures keyboard bindings
-configure-keybindings:
-  gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', 'org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "<Primary><Alt>t"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "gnome-terminal"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "Open Terminal"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding "<Super>e"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command "nautilus --new-window"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name "Open File Explorer"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding "<Shift><Control>Escape"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command "gnome-system-monitor"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name "Open System Monitor"
+# configure-keybindings:
+#   gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
+#   gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', 'org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
+#   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "<Primary><Alt>t"
+#   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "gnome-terminal"
+#   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "Open Terminal"
+#   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding "<Super>e"
+#   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command "nautilus --new-window"
+#   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name "Open File Explorer"
+#   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding "<Shift><Control>Escape"
+#   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command "gnome-system-monitor"
+#   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name "Open System Monitor"
 
 # Configures settings for Nautilus
 configure-nautilus:
@@ -133,42 +131,6 @@ install-appimage-desktop $appimage:
   # Return to original directory
   popd &> /dev/null
    
-
-# Downloads and installs AppImages
-install-appimages:
-  #!/usr/bin/env bash
-
-  set -euo pipefail
-
-  # Source aliases from ~/.bash_aliases
-  shopt -s expand_aliases
-  if [ -f "$HOME/.bash_aliases" ]; then
-    . $HOME/.bash_aliases
-  fi
-
-  echo "Downloading AppImage for Tutanota to $HOME/.local/bin..."
-  curl -s https://mail.tutanota.com/desktop/tutanota-desktop-linux.AppImage -o $HOME/.local/bin/Tutanota.AppImage
-  
-  # Download Bitwarden Desktop Client
-  BITWARDEN_URL=$(curl -sL https://api.github.com/repos/bitwarden/clients/releases | jq -r 'first(.[] | select (.tag_name|test("^desktop-"))).assets[] | select(.browser_download_url | test("AppImage")).browser_download_url')
-  echo "Downloading AppImage for Bitwarden to $HOME/.local/bin..."
-  curl -sL $BITWARDEN_URL -o $HOME/.local/bin/bitwarden.AppImage
-
-  # Download MediaElch
-  echo "Downloading AppImage for MediaElch to $HOME/.local/bin..."
-  just download-appimage-github Komet MediaElch $HOME/.local/bin/MediaElch.AppImage
-
-  # Ensure AppImages are executable.
-  chmod u+x $HOME/.local/bin/*.AppImage
-
-  # Install Desktop Entries
-  just install-appimage-desktop bitwarden.AppImage
-  just install-appimage-desktop MediaElch.AppImage
-
-  # Tweak Desktop Entry Paths
-  sed -i "s|AppRun --no-sandbox|$HOME/.local/bin/bitwarden.AppImage|" $HOME/.local/share/applications/bitwarden.desktop
-  sed -i "s|Exec=MediaElch|Exec=$HOME/.local/bin/MediaElch.AppImage|" $HOME/.local/share/applications/MediaElch.desktop
-  sed -i "s|Icon=MediaElch|Icon=$HOME/.local/share/icons/MediaElch.png|" $HOME/.local/share/applications/MediaElch.desktop
 
 # Installs a specified GNOME extension
 install-gnome-extension uuid:
@@ -236,42 +198,30 @@ install-gnome-extensions:
   just compile-gsettings-schemas
   just configure-gnome-extensions
 
-# Installs podman container using quadlet
-[linux]
-install-container $name:
+install-toolboxes:
   #!/usr/bin/env bash
 
-  set -eou pipefail
-
-  if [ ! -d $HOME/.config/containers/systemd ]; then
-    mkdir -p $HOME/.config/containers/systemd
-  fi
-
-  if [ -f .just/$name/$name.container ]; then
-    cp .just/$name/$name.container $HOME/.config/containers/systemd/
-  elif [ -f .just/$name/$name.container.j2 ]; then
-    .just/scripts/render_quadlet_container_template.py .just/$name/$name.container.j2 .just/secrets.yml
+  # Read .toolboxes file into an array
+  TOOLBOXES=()
+  if [ -f $HOME/.toolboxes ]; then
+    readarray -t TOOLBOXES < <(cat $HOME/.toolboxes)
   else
-    echo "ERROR: Unable to find quadlet for specified container ($name)."
+    echo "Unable to locate $HOME/.toolboxes file."
     exit 1
   fi
 
-  systemctl --user daemon-reload
-  systemctl --user start $name
+  if [ -n "${TOOLBOXES[*]}" ]; then
+    for TOOLBOX in ${TOOLBOXES[@]}; do
+      # Destroy existing toolbox
+      toolbox rm --force ${TOOLBOX##*/}
 
-# Installs container for Syncthing
-[linux]
-install-containers:
-  #!/usr/bin/env bash
+      # Pull latest images
+      podman pull -q $TOOLBOX
 
-  set -euo pipefail
-
-  shopt -s expand_aliases
-  if [ -f "$HOME/.bash_aliases" ]; then
-    . $HOME/.bash_aliases
+      # Create toolboxes
+      toolbox create -y -i $TOOLBOX
+    done
   fi
-
-  just install-container syncthing
 
 # Install additional Windows software
 [windows]
@@ -302,7 +252,6 @@ setup:
     . $HOME/.bash_aliases
   fi
 
-  # just install-appimages
   just install-gnome-extensions
   just configure-desktop-background
   just configure-desktop-interface
@@ -314,6 +263,7 @@ setup:
   just configure-touchpad
   just configure-windowmanager
   just configure-gnome-shell
+  just install-toolboxes
 
 # You can add your own commands here! For documentation, see: https://ublue.it/guide/just/
 import "/usr/share/ublue-os/justfile"
