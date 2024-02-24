@@ -201,6 +201,10 @@ install-gnome-extensions:
 install-toolboxes:
   #!/usr/bin/env bash
 
+  # Enable toolbox-install.service
+  systemctl --user daemon-reload
+  systemctl --user enable toolbox-install.service
+
   # Read .toolboxes file into an array
   TOOLBOXES=()
   if [ -f $HOME/.toolboxes ]; then
