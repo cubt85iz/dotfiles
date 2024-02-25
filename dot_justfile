@@ -41,6 +41,7 @@ configure-gnome-extensions:
   gsettings set org.gnome.shell.extensions.blur-my-shell.panel blur 'false'
   gsettings set org.gnome.shell.extensions.dash-to-dock apply-custom-theme 'true'
   gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'previews'
+  gsettings set org.gnome.shell.extensions.dash-to-dock disable-overview-on-startup 'true'
   gsettings set org.gnome.shell.extensions.dash-to-dock show-apps-at-top 'true'
   # gsettings set org.gnome.shell.extensions.openweather position-in-panel 'right'
   # gsettings set org.gnome.shell.extensions.openweather pressure-unit 'bar'
@@ -67,6 +68,19 @@ configure-keybindings:
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding "<Shift><Control>Escape"
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command "gnome-system-monitor"
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name "Open System Monitor"
+
+# Configure settings for multitasking
+configure-multitasking:
+  gsettings set org.gnome.mutter dynamic-workspaces 'false'
+  gsettings set org.gnome.desktop.wm.preferences num-workspaces '4'
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "[]"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-up "[]"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "[]"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-down "[]"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Control><Alt>Left']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Control><Alt>Up']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Control><Alt>Right']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Control><Alt>Down']"
 
 # Configures settings for Nautilus
 configure-nautilus:
