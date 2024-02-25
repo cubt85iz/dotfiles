@@ -265,7 +265,7 @@ setup:
   just configure-desktop-background
   just configure-desktop-interface
   just configure-desktop-notifications
-  # just configure-keybindings
+  just configure-keybindings
   just configure-nautilus
   just configure-power-settings
   just configure-privacy-settings
