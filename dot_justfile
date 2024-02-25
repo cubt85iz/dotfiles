@@ -246,23 +246,6 @@ install-toolboxes:
     done
   fi
 
-# Install additional Windows software
-[windows]
-install-winget-pkgs:
-  just install-winget-package '7zip.7zip'
-  just install-winget-package 'Brave.Brave'
-  just install-winget-package 'Citrix.Workspace.LTSR'
-  just install-winget-package 'JohnMacFarlane.Pandoc'
-  just install-winget-package 'Mattermost.MattermostDesktop'
-  just install-winget-package 'Microsoft.Office'
-  just install-winget-package 'Microsoft.VisualStudioCode'
-  just install-winget-package 'MHNexus.HxD'
-  just install-winget-package 'Mozilla.Firefox'
-  just install-winget-package 'NoMoreFood.PuTTY-CAC'
-  just install-winget-package 'Spotify.Spotify'
-  just install-winget-package 'TheDocumentFoundation.LibreOffice'
-  just install-winget-package 'VideoLAN.VLC'
-
 # Sets up PC with desired settings
 [linux]
 setup:
