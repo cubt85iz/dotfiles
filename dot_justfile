@@ -135,6 +135,7 @@ install-appimage-desktop $appimage:
 # Installs a specified GNOME extension
 install-gnome-extension uuid:
   #!/usr/bin/env bash
+  
   set -euxo pipefail
 
   EXTENSION_DIR="$HOME/.local/share/gnome-shell/extensions"
@@ -201,6 +202,8 @@ install-gnome-extensions:
 install-toolboxes:
   #!/usr/bin/env bash
 
+  set -euox pipefail
+
   # Enable toolbox-install.service
   systemctl --user daemon-reload
   systemctl --user enable toolbox-install.service
@@ -217,7 +220,9 @@ install-toolboxes:
   if [ -n "${TOOLBOXES[*]}" ]; then
     for TOOLBOX in ${TOOLBOXES[@]}; do
       # Destroy existing toolbox
-      toolbox rm --force ${TOOLBOX##*/}
+      if podman container exists $TOOLBOX; then
+        toolbox rm --force ${TOOLBOX##*/}
+      fi
 
       # Pull latest images
       podman pull -q $TOOLBOX
