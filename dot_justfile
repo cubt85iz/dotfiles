@@ -280,6 +280,7 @@ setup:
   just configure-desktop-interface
   just configure-desktop-notifications
   just configure-keybindings
+  just configure-multitasking
   just configure-nautilus
   just configure-power-settings
   just configure-privacy-settings
