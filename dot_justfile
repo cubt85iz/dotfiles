@@ -43,11 +43,8 @@ configure-gnome-extensions:
   gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'previews'
   gsettings set org.gnome.shell.extensions.dash-to-dock disable-overview-on-startup 'true'
   gsettings set org.gnome.shell.extensions.dash-to-dock show-apps-at-top 'true'
-  # gsettings set org.gnome.shell.extensions.openweather position-in-panel 'right'
-  # gsettings set org.gnome.shell.extensions.openweather pressure-unit 'bar'
-  # gsettings set org.gnome.shell.extensions.openweather unit 'fahrenheit'
-  # gsettings set org.gnome.shell.extensions.openweather wind-speed-unit 'mph'
   gsettings set org.gnome.shell.extensions.quick-settings-tweaks output-show-selected 'true'
+  gsettings set org.gnome.shell enabled-extensions "['quick-settings-tweaks@qwreey', 'add-username-toppanel@brendaw.com', 'AlphabeticalAppGrid@stuarthayhurst', 'appindicatorsupport@rgcjonas.gmail.com', 'blur-my-shell@aunetx', 'dash-to-dock@micxgx.gmail.com', 'Move_Clock@rmy.pobox.com', 'transparent-top-bar@ftpix.com', 'weatheroclock@CleoMenezesJr.github.io']"
 
 # Configure settings for GNOME shell
 configure-gnome-shell:
@@ -211,9 +208,9 @@ install-gnome-extensions:
   just install-gnome-extension dash-to-dock@micxgx.gmail.com
   just install-gnome-extension Move_Clock@rmy.pobox.com
   just install-gnome-extension no-overview@fthx
-  # just install-gnome-extension openweather-extension@jenslody.de
   just install-gnome-extension quick-settings-tweaks@qwreey
   just install-gnome-extension transparent-top-bar@ftpix.com
+  just install-gnome-extension weatheroclock@CleoMenezesJr.github.io
   just compile-gsettings-schemas
   just configure-gnome-extensions
 
