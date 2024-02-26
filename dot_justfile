@@ -274,6 +274,7 @@ setup:
   just configure-touchpad
   just configure-windowmanager
   just configure-gnome-shell
+  just install-starship
   just install-toolboxes
 
 # You can add your own commands here! For documentation, see: https://ublue.it/guide/just/
