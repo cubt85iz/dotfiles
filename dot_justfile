@@ -274,5 +274,30 @@ setup:
   just install-starship
   just install-toolboxes
 
+[linux]
+unlock-audiobook $INPUT $OUTPUT="":
+  #!/usr/bin/env bash
+
+  set -euox pipefail
+
+  ACTIVATION_BYTES=
+  if [ -f $HOME/.audible/activation_bytes ]; then
+    ACTIVATION_BYTES=$(cat $HOME/.audible/activation_bytes)
+  else
+    echo "ERROR: Missing activation_bytes file ($HOME/.audible/activation_bytes)."
+    exit 1
+  fi
+
+  if [ ! -f "$INPUT" ]; then
+    echo "ERROR: Input file ($INPUT) not found."
+    exit 1
+  fi
+
+  if [ -z "$OUTPUT" ]; then
+    ffmpeg -activation_bytes $ACTIVATION_BYTES -i "$INPUT" -c copy "${INPUT%.*}.m4b"
+  else
+    ffmpeg -activation_bytes $ACTIVATION_BYTES -i "$INPUT" -c copy "${OUTPUT}"
+  fi
+
 # You can add your own commands here! For documentation, see: https://ublue.it/guide/just/
 import "/usr/share/ublue-os/justfile"
