@@ -1,0 +1,22 @@
+{
+  "include": [
+    "org.qbittorrent.qBittorrent",
+    "com.google.AndroidStudio",
+    "org.gnome.Boxes",
+    "com.brave.Browser",
+    "com.discordapp.Discord",
+    "org.gnome.FileRoller",
+    "org.mozilla.firefox",
+    "org.keepassxc.KeePassXC",
+    "org.libreoffice.LibreOffice",
+    "com.makemkv.MakeMKV",
+    "org.bunkus.mkvtoolnix-gui",
+    "org.openrgb.OpenRGB",
+    "org.freedesktop.Piper",
+    "com.spotify.Client",
+    "com.valvesoftware.Steam",
+    "org.gimp.GIMP",
+    "org.videolan.VLC"
+  ],
+  "exclude": []
+}
