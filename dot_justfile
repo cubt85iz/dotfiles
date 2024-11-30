@@ -48,7 +48,7 @@ configure-gnome-extensions:
 
 # Configure settings for GNOME shell
 configure-gnome-shell:
-  gsettings set org.gnome.shell favorite-apps "['org.mozilla.firefox.desktop', 'com.brave.Browser.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop', 'code.desktop', 'com.spotify.Client.desktop', 'com.valvesoftware.Steam.desktop', 'com.discordapp.Discord.desktop', 'tutanota-desktop.desktop', 'bitwarden.desktop']"
+  gsettings set org.gnome.shell favorite-apps "['org.mozilla.firefox.desktop', 'com.brave.Browser.desktop', 'org.gnome.Ptyxis.desktop', 'org.gnome.Nautilus.desktop', 'code.desktop', 'com.spotify.Client.desktop', 'com.valvesoftware.Steam.desktop', 'com.discordapp.Discord.desktop', 'tutanota-desktop.desktop', 'bitwarden.desktop']"
   gsettings set org.gnome.shell.app-switcher current-workspace-only 'true'
   gsettings set org.gnome.shell.weather automatic-location 'false'
 
@@ -57,7 +57,7 @@ configure-keybindings:
   gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
   gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "<Primary><Alt>t"
-  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "gnome-terminal"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "ptyxis --new-window"
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "Open Terminal"
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding "<Super>e"
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command "nautilus --new-window"
@@ -112,40 +112,6 @@ configure-touchpad:
 # Configures settings for window manager
 configure-windowmanager:
   gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
-
-download-appimage-github $org $repo $destination:
-  #!/usr/bin/env bash
-
-  set -euo pipefail
-
-  RELEASE_URL=https://api.github.com/repos/$org/$repo/releases/latest
-  APPIMAGE_URL=$(curl -sL $RELEASE_URL | jq -r '.assets[] | select(.name|test("AppImage$")).browser_download_url')
-  curl -sL $APPIMAGE_URL -o $destination 
-
-install-appimage-desktop $appimage:
-  #!/usr/bin/env bash
-
-  set -euo pipefail
-
-  # Extract AppImage to local directory
-  pushd ~/.local/bin &> /dev/null
-  $appimage --appimage-extract
-
-  # Install desktop entry
-  cp squashfs-root/*.desktop ~/.local/share/applications/
-
-  # Install icons
-  rsync -a squashfs-root/usr/share/icons/ ~/.local/share/icons/
-  if [ "$appimage" == "MediaElch.AppImage" ]; then
-    cp squashfs-root/MediaElch.png $HOME/.local/share/icons/
-  fi
-
-  # Remove squashfs-root directory
-  rm -rf squashfs-root
-
-  # Return to original directory
-  popd &> /dev/null
-   
 
 # Installs a specified GNOME extension
 install-gnome-extension uuid:
