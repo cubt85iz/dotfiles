@@ -1,0 +1,9 @@
+[Unit]
+Description=Service for processing Audible AAX files
+Requires=audible-tool.service
+
+[Path]
+PathChanged=%h/Downloads
+
+[Install]
+WantedBy=default.target

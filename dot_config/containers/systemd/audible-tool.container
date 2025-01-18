@@ -1,0 +1,12 @@
+[Unit]
+Description=Container for processing Audible AAX files
+
+[Container]
+ContainerName=%p
+Image=ghcr.io/cubt85iz/audible-tool:latest
+Volume=%h/Downloads:/consume:z,rw,rslave,rbind
+Volume=%h/Audiobooks:/staging:z,rw,rslave,rbind
+AutoUpdate=registry
+
+[Service]
+Restart=on-failure
