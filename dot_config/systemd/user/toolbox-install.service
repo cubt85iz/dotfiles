@@ -3,7 +3,7 @@ Description=Service for creating toolboxes
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c "/usr/bin/just --unstable -f %h/.justfile install-toolboxes"
+ExecStart=/bin/bash -c "/usr/bin/just -f %h/.justfile install-toolboxes"
 Restart=on-failure
 RestartSec=5min
 
