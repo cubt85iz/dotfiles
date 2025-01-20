@@ -1,0 +1,14 @@
+[Unit]
+Description=Container for processing audio CDs using abcde
+
+[Container]
+ContainerName=%p
+Image=ghcr.io/cubt85iz/abcde-container:latest
+Volume=%h/.abcde.conf:/etc/abcde.conf
+Volume=%h/Music:/output
+AddDevice=%I:/dev/cdrom:rwm
+AutoUpdate=registry
+
+[Service]
+ExecStopPost=eject %I
+Restart=on-failure
