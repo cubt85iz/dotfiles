@@ -1,5 +1,9 @@
 import ".just/starship.just"
 
+# List all available recipes
+default:
+  @just --list
+
 # Compiles all GSettings XML schema files to gschemas.compiled
 compile-gsettings-schemas:
   #!/usr/bin/env bash
@@ -248,6 +252,3 @@ update-appimages:
   set -euox pipefail
 
   systemctl --user start appimage-manager.service
-
-# You can add your own commands here! For documentation, see: https://ublue.it/guide/just/
-import "/usr/share/ublue-os/justfile"
