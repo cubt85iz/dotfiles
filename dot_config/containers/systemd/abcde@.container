@@ -6,7 +6,7 @@ ContainerName=%p
 Image=ghcr.io/cubt85iz/abcde-container:latest
 Volume=%h/.abcde.conf:/etc/abcde.conf
 Volume=%h/Music:/output
-AddDevice=%I:/dev/cdrom:rwm
+AddDevice=%I:/dev/cdrom
 AutoUpdate=registry
 
 [Service]
