@@ -1,6 +1,7 @@
 import ".just/starship.just"
 
 # List all available recipes
+[private]
 default:
   @just --list
 
@@ -115,7 +116,11 @@ configure-touchpad:
 
 # Configures settings for window manager
 configure-windowmanager:
-  gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
+  gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'\
+
+# Binds a local port to remote port using host as a proxy
+fwd-to-ssh local-port remote-addr remote-port host:
+  @ssh -L {{ local-port }}:{{ remote-addr }}:{{ remote-port }} {{ host }}
 
 # Installs a specified GNOME extension
 install-gnome-extension uuid:
