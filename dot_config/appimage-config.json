@@ -6,16 +6,6 @@
       "source": "Komet/MediaElch"
     },
     {
-      "name": "Tuta",
-      "source": "tutao/tutanota",
-      "pattern": "Desktop"
-    },
-    {
-      "name": "Bitwarden",
-      "source": "bitwarden/clients",
-      "pattern": "Desktop"
-    },
-    {
       "name": "balenaEtcher",
       "source": "balena-io/etcher"
     }
