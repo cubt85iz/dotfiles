@@ -1,10 +1,10 @@
-import "dot_just/gnome.just"
+import ".just/gnome.just"
 
-import "dot_just/setup.just"
+import ".just/setup.just"
 
-import "dot_just/ssh.just"
+import ".just/ssh.just"
 
-import "dot_just/starship.just"
+import ".just/starship.just"
 
 # NOTE: Use this file to store shared recipes that can be executed from
 # any imported recipe.
