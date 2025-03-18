@@ -1,4 +1,6 @@
 # Compiles all GSettings XML schema files to gschemas.compiled
+[group('Setup')]
+[group('Gnome')]
 compile-gsettings-schemas:
   #!/usr/bin/env bash
   set -euxo pipefail
@@ -13,6 +15,8 @@ compile-gsettings-schemas:
   popd || exit &> /dev/null
 
 # Configures settings for desktop background
+[group('Setup')]
+[group('Gnome')]
 configure-desktop-background:
   gsettings set org.gnome.desktop.background color-shading-type 'solid'
   gsettings set org.gnome.desktop.background picture-options 'zoom'
@@ -20,6 +24,8 @@ configure-desktop-background:
   gsettings set org.gnome.desktop.background secondary-color '#000000'
 
 # Configures settings for desktop interface
+[group('Setup')]
+[group('Gnome')]
 configure-desktop-interface:
   gsettings set org.gnome.desktop.interface clock-show-weekday 'true'
   gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
@@ -28,11 +34,15 @@ configure-desktop-interface:
   gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled false
 
 # Configures settings for desktop notifications
+[group('Setup')]
+[group('Gnome')]
 configure-desktop-notifications:
   gsettings set org.gnome.desktop.notifications application-children "['org-gnome-software', 'org-gnome-terminal', 'org-gnome-extensions-desktop', 'org-gnome-evolution-alarm-notify', 'org-gnome-nautilus', 'code', 'gnome-power-panel', 'gnome-network-panel', 'firefox', 'gnome-printers-panel', 'com-spotify-client']"
   gsettings set org.gnome.desktop.notifications show-in-lock-screen 'false'
 
 # Configure settings for GNOME extensions
+[group('Setup')]
+[group('Gnome')]
 configure-gnome-extensions:
   gsettings set com.ftpix.transparentbar transparency '0'
   gsettings set org.gnome.shell.extensions.alphabetical-app-grid show-favourite-apps 'true'
@@ -45,12 +55,16 @@ configure-gnome-extensions:
   gsettings set org.gnome.shell enabled-extensions "['quick-settings-tweaks@qwreey', 'add-username-toppanel@brendaw.com', 'AlphabeticalAppGrid@stuarthayhurst', 'appindicatorsupport@rgcjonas.gmail.com', 'blur-my-shell@aunetx', 'dash-to-dock@micxgx.gmail.com', 'Move_Clock@rmy.pobox.com', 'transparent-top-bar@ftpix.com', 'weatheroclock@CleoMenezesJr.github.io']"
 
 # Configure settings for GNOME shell
+[group('Setup')]
+[group('Gnome')]
 configure-gnome-shell:
   gsettings set org.gnome.shell favorite-apps "['org.mozilla.firefox.desktop', 'com.brave.Browser.desktop', 'org.gnome.Ptyxis.desktop', 'org.gnome.Nautilus.desktop', 'code.desktop', 'com.spotify.Client.desktop', 'com.valvesoftware.Steam.desktop', 'com.discordapp.Discord.desktop', 'tutanota-desktop.desktop', 'bitwarden.desktop']"
   gsettings set org.gnome.shell.app-switcher current-workspace-only 'true'
   gsettings set org.gnome.shell.weather automatic-location 'false'
 
 # Configures keyboard bindings
+[group('Setup')]
+[group('Gnome')]
 configure-keybindings:
   gsettings set org.gnome.desktop.wm.keybindings show-desktop "['<Super>d']"
   gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
@@ -65,6 +79,8 @@ configure-keybindings:
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name "Open System Monitor"
 
 # Configure settings for multitasking
+[group('Setup')]
+[group('Gnome')]
 configure-multitasking:
   gsettings set org.gnome.mutter dynamic-workspaces 'false'
   gsettings set org.gnome.desktop.wm.preferences num-workspaces '4'
@@ -82,12 +98,16 @@ configure-multitasking:
   gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Shift><Control><Alt>Down']"
 
 # Configures settings for Nautilus
+[group('Setup')]
+[group('Gnome')]
 configure-nautilus:
   gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
   gsettings set org.gnome.nautilus.preferences migrated-gtk-settings 'true'
   gsettings set org.gtk.Settings.FileChooser sort-directories-first 'true'
 
 # Configures settings for power
+[group('Setup')]
+[group('Gnome')]
 configure-power-settings:
   gsettings set org.gnome.settings-daemon.plugins.power power-button-action 'interactive'
   gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout '7200'
@@ -95,6 +115,8 @@ configure-power-settings:
   gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout '900'
 
 # Configures settings for privacy
+[group('Setup')]
+[group('Gnome')]
 configure-privacy-settings:
   gsettings set org.gnome.desktop.privacy disable-camera 'true'
   gsettings set org.gnome.desktop.privacy old-files-age 'uint32 30'
@@ -103,15 +125,22 @@ configure-privacy-settings:
   gsettings set org.gnome.system.location enabled 'false'
 
 # Configures settings for touchpad
+[group('Setup')]
+[group('Gnome')]
 configure-touchpad:
   gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click 'true'
   gsettings set org.gnome.desktop.peripherals.touchpad two-finger-scrolling-enabled 'true'
 
 # Configures settings for window manager
+[group('Setup')]
+[group('Gnome')]
 configure-windowmanager:
-  gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'\
+  gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 
 # Installs a specified GNOME extension
+[group('Setup')]
+[group('Gnome')]
+[private]
 install-gnome-extension uuid:
   #!/usr/bin/env bash
   
@@ -155,6 +184,8 @@ install-gnome-extension uuid:
   fi
 
 # Installs all GNOME extensions
+[group('Setup')]
+[group('Gnome')]
 install-gnome-extensions:
   #!/usr/bin/env bash
 

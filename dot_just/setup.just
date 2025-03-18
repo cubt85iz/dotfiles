@@ -1,3 +1,5 @@
+[group('Development')]
+[group('Setup')]
 install-toolboxes:
   #!/usr/bin/env bash
 
@@ -32,6 +34,7 @@ install-toolboxes:
   fi
 
 # Sets up PC with desired settings
+[group('Setup')]
 [linux]
 setup:
   #!/usr/bin/env bash
@@ -57,12 +60,3 @@ setup:
   just configure-gnome-shell
   just install-starship
   just install-toolboxes
-
-# Starts appimage-manager service to update installed AppImages
-[linux]
-update-appimages:
-  #!/usr/bin/env bash
-
-  set -euox pipefail
-
-  systemctl --user start appimage-manager.service
