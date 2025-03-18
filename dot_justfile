@@ -13,3 +13,140 @@ import ".just/starship.just"
 default:
   @just --list
 
+[private]
+get-colors:
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  cat <<EOF
+  FGBLACK=30
+  FGRED=31
+  FGGREEN=32
+  FGBROWN=33
+  FGBLUE=34
+  FGPURPLE=35
+  FGCYAN=36
+  FGGRAY=37
+  BGBLACK=40
+  BGRED=41
+  BGGREEN=42
+  BGBROWN=43
+  BGBLUE=44
+  BGPURPLE=45
+  BGCYAN=46
+  BGGRAY=47
+  EOF
+
+[private]
+get-styles:
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  cat <<EOF
+  NORMAL=0
+  BOLD=1
+  UNDERLINE=4
+  BLINK=5
+  EOF
+
+[private]
+stderr message level="ERROR":
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  MESSAGE="{{ message }}"
+  LEVEL="{{ level }}"
+
+  # Source colors and styles
+  source <(just get-colors)
+  source <(just get-styles)
+
+  # Get styles for error message
+  RED_BOLD=$(just stylize FGRED BOLD)
+  BOLD=$(just stylize BOLD)
+  NF=$(just stylize)
+
+  >&2 echo -e "${RED_BOLD}[$LEVEL] ${NF}${BOLD}${MESSAGE}${NF}"
+
+[private]
+stdout message level="":
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  MESSAGE="{{ message }}"
+  LEVEL="{{ level }}"
+
+  # Source colors and styles
+  source <(just get-colors)
+  source <(just get-styles)
+
+  # Build stylized formats for output
+  BROWN_BOLD=$(just stylize FGBROWN BOLD)
+  BOLD=$(just stylize BOLD)
+  NF=$(just stylize)
+
+  if [ -n "$LEVEL" ]; then
+    if [ "$LEVEL" == "WARN" ]; then
+      echo -e "${BROWN_BOLD}[WARN] ${NF}${BOLD}${MESSAGE}${NF}"
+    else
+      echo "[$LEVEL] $MESSAGE"
+    fi
+  else
+    echo "$MESSAGE"
+  fi
+
+[no-exit-message]
+[private]
+stylize *args:
+  #!/usr/bin/env bash
+
+  set -euo pipefail
+
+  # Source colors and styles
+  source <(just get-colors)
+  source <(just get-styles)
+
+  ARGS=({{ args }})
+
+  FGCOLOR=
+  BGCOLOR=
+  STYLES=()
+
+  # Clear any formatting if no arguments are provided.
+  [ ${#ARGS[@]} -eq 0 ] && STYLES+=("$NORMAL")
+
+  for ARG in ${ARGS[@]}; do
+    case $ARG in
+      FGBLACK|FGRED|FGGREEN|FGBROWN|FGBLUE|FGPURPLE|FGCYAN|FGGRAY)
+        if [ -z "$FGCOLOR" ]; then
+          FGCOLOR=${!ARG}
+        fi
+        ;;
+      BGBLACK|BGRED|BGGREEN|BGBROWN|BGBLUE|BGPURPLE|BGCYAN|BGGRAY)
+        if [ -z "$BGCOLOR" ]; then
+          BGCOLOR=${!ARG}
+        fi
+        ;;
+      NORMAL|BOLD|UNDERLINE|BLINK)
+        STYLES+=("${!ARG}")
+        ;;
+      *)
+        just stderr "Invalid code for color or style."
+        exit 1
+        ;;
+    esac
+  done
+
+  OUTPUT=
+  for STYLE in ${STYLES[@]}; do
+    [ -n "$OUTPUT" ] && OUTPUT+=';'; OUTPUT+=$STYLE
+  done
+  [ -z "$FGCOLOR" ] || OUTPUT+=";$FGCOLOR"
+  [ -z "$BGCOLOR" ] || OUTPUT+=";$BGCOLOR"
+
+  echo "\e[${OUTPUT}m"
+
