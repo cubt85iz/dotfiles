@@ -6,8 +6,8 @@ ContainerName=%p
 Image=docker.io/%p/%p:latest
 Volume=%h/.syncthing/data:/var/%p:Z
 PublishPort=${WEB_PORT}:8384/tcp
-PublishPort=${SYNC_PORT):22000/tcp
-PublishPort=$(SYNC_PORT}:22000/udp
+PublishPort=${SYNC_PORT}:22000/tcp
+PublishPort=${SYNC_PORT}:22000/udp
 UserNS=keep-id
 AutoUpdate=registry
 
