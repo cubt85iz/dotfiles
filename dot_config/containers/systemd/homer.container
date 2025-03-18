@@ -1,0 +1,18 @@
+[Unit]
+Description=Container for personal dashboard
+
+[Container]
+ContainerName=%p
+Image=docker.io/b4bz/homer:latest
+Volume=%h/.homer:/www/assets:z,ro,rbind,rslave
+PublishPort=8080:8080
+UserNS=keep-id
+AutoUpdate=registry
+
+[Service]
+ExecCondition=/usr/bin/test -d "%h/.homer"
+Restart=on-failure
+RestartTimeoutSec=15
+
+[Install]
+WantedBy=default.target
