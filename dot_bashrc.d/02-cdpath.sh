@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-CDPATH=/var/home/philip:/var/home/philip/source/repos
+CDPATH=$HOME:$HOME/source/repos:$HOME/source/repos/cubt85iz
