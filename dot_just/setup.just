@@ -58,5 +58,6 @@ setup:
   just configure-touchpad
   just configure-windowmanager
   just configure-gnome-shell
+  just install-fonts
   just install-starship
   just install-toolboxes
