@@ -1,3 +1,5 @@
+import ".just/fonts.just"
+
 import ".just/gnome.just"
 
 import ".just/setup.just"
