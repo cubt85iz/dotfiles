@@ -22,14 +22,14 @@ get-colors:
   set -euo pipefail
 
   cat <<EOF
-  FGBLACK=30
-  FGRED=31
-  FGGREEN=32
-  FGBROWN=33
-  FGBLUE=34
-  FGPURPLE=35
-  FGCYAN=36
-  FGGRAY=37
+  BLACK=30
+  RED=31
+  GREEN=32
+  BROWN=33
+  BLUE=34
+  PURPLE=35
+  CYAN=36
+  GRAY=37
   BGBLACK=40
   BGRED=41
   BGGREEN=42
@@ -67,7 +67,7 @@ stderr message level="ERROR":
   source <(just get-styles)
 
   # Get styles for error message
-  RED_BOLD=$(just stylize FGRED BOLD)
+  RED_BOLD=$(just stylize RED BOLD)
   BOLD=$(just stylize BOLD)
   NF=$(just stylize)
 
@@ -87,7 +87,7 @@ stdout message level="":
   source <(just get-styles)
 
   # Build stylized formats for output
-  BROWN_BOLD=$(just stylize FGBROWN BOLD)
+  BROWN_BOLD=$(just stylize BROWN BOLD)
   BOLD=$(just stylize BOLD)
   NF=$(just stylize)
 
@@ -123,7 +123,7 @@ stylize *args:
 
   for ARG in ${ARGS[@]}; do
     case $ARG in
-      FGBLACK|FGRED|FGGREEN|FGBROWN|FGBLUE|FGPURPLE|FGCYAN|FGGRAY)
+      BLACK|RED|GREEN|BROWN|BLUE|PURPLE|CYAN|GRAY)
         if [ -z "$FGCOLOR" ]; then
           FGCOLOR=${!ARG}
         fi
