@@ -1,12 +1,13 @@
 {
   "include": [
     "org.qbittorrent.qBittorrent",
-    "com.google.AndroidStudio",
     "org.gnome.Boxes",
     "com.brave.Browser",
     "com.discordapp.Discord",
+    "org.gnome.Evolution",
     "org.gnome.FileRoller",
     "org.mozilla.firefox",
+    "org.mozilla.Thunderbird",
     "org.keepassxc.KeePassXC",
     "org.libreoffice.LibreOffice",
     "org.musicbrainz.Picard",
