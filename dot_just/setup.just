@@ -13,24 +13,22 @@ install-toolboxes:
   TOOLBOXES=()
   if [ -f $HOME/.toolboxes ]; then
     readarray -t TOOLBOXES < <(cat $HOME/.toolboxes)
+    if [ -n "${TOOLBOXES[*]}" ]; then
+      for TOOLBOX in ${TOOLBOXES[@]}; do
+        # Destroy existing toolbox
+        if podman container exists ${TOOLBOX##*/}; then
+          toolbox rm --force ${TOOLBOX##*/}
+        fi
+
+        # Pull latest images
+        podman pull -q $TOOLBOX
+
+        # Create toolboxes
+        toolbox create -y -i $TOOLBOX
+      done
+    fi
   else
-    echo "Unable to locate $HOME/.toolboxes file."
-    exit 1
-  fi
-
-  if [ -n "${TOOLBOXES[*]}" ]; then
-    for TOOLBOX in ${TOOLBOXES[@]}; do
-      # Destroy existing toolbox
-      if podman container exists ${TOOLBOX##*/}; then
-        toolbox rm --force ${TOOLBOX##*/}
-      fi
-
-      # Pull latest images
-      podman pull -q $TOOLBOX
-
-      # Create toolboxes
-      toolbox create -y -i $TOOLBOX
-    done
+    echo "Configuration file for toolboxes not found. Skipping creation of toolboxes..."
   fi
 
 # Sets up PC with desired settings
