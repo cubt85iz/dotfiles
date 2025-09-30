@@ -14,6 +14,16 @@ compile-gsettings-schemas:
   # Restore original directory
   popd || exit &> /dev/null
 
+  # Compile schemas for any extensions missing gschemas.compiled.
+  # This would prevent them from being properly loaded.
+  for SCHEMAS_DIR in $HOME/.local/share/gnome-shell/extensions/**/schemas; do
+    if [ ! -e "$SCHEMAS_DIR/gschemas.compiled" ]; then
+      pushd "$SCHEMAS_DIR" || exit 1 &> /dev/null
+      glib-compile-schemas .
+      popd || exit 1 &> /dev/null
+    fi
+  done
+
 # Configures settings for desktop background
 [group('Setup')]
 [group('Gnome')]
