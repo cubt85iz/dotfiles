@@ -1,0 +1,6 @@
+[Unit]
+Description=Build unit for audible-tool
+
+[Build]
+ImageTag=ghcr.io/cubt85iz/audible-tool:latest
+SetWorkingDirectory=https://github.com/cubt85iz/audible-tool.git
